@@ -49,13 +49,15 @@ router.post('/login', function(req, res, next) {
   if(motDePasse == 'querty') {
     const jeton = jwt.sign(nomUtilisateur, process.env.SECRET);
     console.log("Création du jeton: " + jeton);
-    let expiration = new Date() + (10 * 60 * 1000);
+    let expiration = new Date();
+    expiration.setMinutes(expiration.getMinutes() + 10);
     console.log('expiration du cookie:' + expiration);
+    
 
     res.cookie('jeton', jeton, {
         secure: process.env.NODE_ENV !== "development",
         httpOnly: true,
-        expires: expiration
+        expire: expiration
     });    
 
     res.json({login:'success'});
